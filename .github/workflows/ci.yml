@@ -51,3 +51,18 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+
+
+  docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: docker build -t pathology-backend:ci .
+
+      - name: Build frontend Docker image
+        run: docker build -t pathology-frontend:ci ./frontend
