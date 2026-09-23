@@ -1,0 +1,36 @@
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: pathology-postgres
+    environment:
+      POSTGRES_DB: pathology_lab
+      POSTGRES_USER: kunal
+      POSTGRES_PASSWORD: pathology_dev_password
+    volumes:
+      - pathology-postgres-data:/var/lib/postgresql
+    ports:
+      - "5433:5432"
+
+  backend:
+    image: pathology-backend:1.3
+    container_name: pathology-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pathology_lab
+      SPRING_DATASOURCE_USERNAME: kunal
+      SPRING_DATASOURCE_PASSWORD: pathology_dev_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  frontend:
+    image: pathology-frontend:1.0
+    container_name: pathology-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pathology-postgres-data:
