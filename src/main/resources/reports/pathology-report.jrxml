@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jasperReport
+        xmlns="http://jasperreports.sourceforge.net/jasperreports"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://jasperreports.sourceforge.net/jasperreports
+        http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+        name="pathology-report"
+        pageWidth="595"
+        pageHeight="842"
+        columnWidth="535"
+        leftMargin="30"
+        rightMargin="30"
+        topMargin="25"
+        bottomMargin="25"
+        whenNoDataType="NoDataSection"
+        uuid="7c9f2f50-6e3a-4c11-8d5a-111111111111">
+
+
+    <!-- ========================================================= -->
+    <!-- PARAMETERS                                                -->
+    <!-- ========================================================= -->
+
+    <parameter name="patientName" class="java.lang.String"/>
+    <parameter name="sex" class="java.lang.String"/>
+    <parameter name="referenceNo" class="java.lang.String"/>
+    <parameter name="referredBy" class="java.lang.String"/>
+    <parameter name="age" class="java.lang.String"/>
+    <parameter name="reportDate" class="java.lang.String"/>
+
+
+    <!-- ========================================================= -->
+    <!-- FIELDS                                                    -->
+    <!-- ========================================================= -->
+
+    <field name="sectionName" class="java.lang.String"/>
+    <field name="testName" class="java.lang.String"/>
+    <field name="resultValue" class="java.lang.String"/>
+    <field name="unit" class="java.lang.String"/>
+    <field name="normalRange" class="java.lang.String"/>
+    <field name="displayOrder" class="java.lang.Integer"/>
+
+
+    <!-- ========================================================= -->
+    <!-- SECTION GROUP                                             -->
+    <!-- ========================================================= -->
+
+    <group name="SectionGroup"
+           isStartNewPage="false"
+           isReprintHeaderOnEachPage="true">
+
+        <groupExpression>
+            <![CDATA[$F{sectionName}]]>
+        </groupExpression>
+
+
+        <!-- ===================================================== -->
+        <!-- SECTION + COLUMN HEADERS                              -->
+        <!-- ===================================================== -->
+
+        <groupHeader>
+
+            <band height="75">
+
+
+                <!-- ================================================= -->
+                <!-- SECTION NAME                                       -->
+                <!-- ================================================= -->
+
+                <textField
+                        isBlankWhenNull="true">
+
+                    <reportElement
+                            x="0"
+                            y="5"
+                            width="535"
+                            height="24"
+                            positionType="Float"/>
+
+                    <textElement
+                            textAlignment="Center"
+                            verticalAlignment="Middle">
+
+                        <font
+                                fontName="Helvetica"
+                                size="13"
+                                isBold="true"/>
+
+                    </textElement>
+
+                    <textFieldExpression>
+                        <![CDATA[$F{sectionName}]]>
+                    </textFieldExpression>
+
+                </textField>
+
+
+                <!-- ================================================= -->
+                <!-- TEST HEADER                                        -->
+                <!-- ================================================= -->
+
+                <staticText>
+
+                    <reportElement
+                            x="40"
+                            y="50"
+                            width="180"
+                            height="20"
+                            positionType="Float"/>
+
+                    <textElement
+                            textAlignment="Left"
+                            verticalAlignment="Middle">
+
+                        <font
+                                fontName="Helvetica"
+                                size="9"
+                                isBold="true"/>
+
+                    </textElement>
+
+                    <text><![CDATA[TEST]]></text>
+
+                </staticText>
+
+
+                <!-- ================================================= -->
+                <!-- RESULT HEADER                                      -->
+                <!-- ================================================= -->
+
+                <staticText>
+
+                    <reportElement
+                            x="220"
+                            y="50"
+                            width="80"
+                            height="20"
+                            positionType="Float"/>
+
+                    <textElement
+                            textAlignment="Center"
+                            verticalAlignment="Middle">
+
+                        <font
+                                fontName="Helvetica"
+                                size="9"
+                                isBold="true"/>
+
+                    </textElement>
+
+                    <text><![CDATA[RESULT]]></text>
+
+                </staticText>
+
+
+                <!-- ================================================= -->
+                <!-- UNIT HEADER                                        -->
+                <!-- ================================================= -->
+
+                <staticText>
+
+                    <reportElement
+                            x="300"
+                            y="50"
+                            width="75"
+                            height="20"
+                            positionType="Float"/>
+
+                    <textElement
+                            textAlignment="Center"
+                            verticalAlignment="Middle">
+
+                        <font
+                                fontName="Helvetica"
+                                size="9"
+                                isBold="true"/>
+
+                    </textElement>
+
+                    <text><![CDATA[UNIT]]></text>
+
+                </staticText>
+
+
+                <!-- ================================================= -->
+                <!-- NORMAL RANGE HEADER                                -->
+                <!-- ================================================= -->
+
+                <staticText>
+
+                    <reportElement
+                            x="375"
+                            y="50"
+                            width="160"
+                            height="20"
+                            positionType="Float"/>
+
+                    <textElement
+                            textAlignment="Center"
+                            verticalAlignment="Middle">
+
+                        <font
+                                fontName="Helvetica"
+                                size="9"
+                                isBold="true"/>
+
+                    </textElement>
+
+                    <text><![CDATA[NORMAL RANGE]]></text>
+
+                </staticText>
+
+            </band>
+
+        </groupHeader>
+
+    </group>
+
+
+    <!-- ========================================================= -->
+    <!-- TITLE                                                     -->
+    <!-- ========================================================= -->
+
+    <title>
+
+        <band height="170">
+
+
+            <!-- ================================================= -->
+            <!-- LAB NAME                                           -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="0"
+                        y="0"
+                        width="535"
+                        height="30"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="19"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[AGRAWAL PATHOLOGY LABORATORY]]></text>
+
+            </staticText>
+
+
+            <!-- ================================================= -->
+            <!-- DOCTOR                                             -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="0"
+                        y="30"
+                        width="535"
+                        height="20"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="11"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Vijay S. Agrawal (B.Sc.P.G.D.M.L.T)]]></text>
+
+            </staticText>
+
+
+            <!-- ================================================= -->
+            <!-- LINE                                               -->
+            <!-- ================================================= -->
+
+            <line>
+
+                <reportElement
+                        x="0"
+                        y="57"
+                        width="535"
+                        height="1"/>
+
+                <graphicElement>
+                    <pen lineWidth="0.8"/>
+                </graphicElement>
+
+            </line>
+
+
+            <!-- ================================================= -->
+            <!-- PATIENT BOX                                        -->
+            <!-- ================================================= -->
+
+            <rectangle>
+
+                <reportElement
+                        x="0"
+                        y="70"
+                        width="535"
+                        height="82"/>
+
+                <graphicElement>
+                    <pen lineWidth="0.7"/>
+                </graphicElement>
+
+            </rectangle>
+
+
+            <!-- ================================================= -->
+            <!-- NAME                                                -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="10"
+                        y="78"
+                        width="45"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Name]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="55"
+                        y="78"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="70"
+                        y="78"
+                        width="320"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{patientName}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- SEX                                                 -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="400"
+                        y="78"
+                        width="35"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Sex]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="435"
+                        y="78"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="450"
+                        y="78"
+                        width="75"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{sex}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- REFERRED BY                                        -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="10"
+                        y="103"
+                        width="45"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Ref By]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="55"
+                        y="103"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="70"
+                        y="103"
+                        width="320"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{referredBy}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- AGE                                                 -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="400"
+                        y="103"
+                        width="35"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Age]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="435"
+                        y="103"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="450"
+                        y="103"
+                        width="75"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{age}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- REFERENCE NUMBER                                    -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="10"
+                        y="128"
+                        width="45"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Ref No]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="55"
+                        y="128"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="70"
+                        y="128"
+                        width="320"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{referenceNo}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- DATE                                                -->
+            <!-- ================================================= -->
+
+            <staticText>
+
+                <reportElement
+                        x="400"
+                        y="128"
+                        width="35"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[Date]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="435"
+                        y="128"
+                        width="10"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <text><![CDATA[:]]></text>
+
+            </staticText>
+
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="450"
+                        y="128"
+                        width="75"
+                        height="18"/>
+
+                <textElement verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$P{reportDate}]]>
+                </textFieldExpression>
+
+            </textField>
+
+        </band>
+
+    </title>
+
+
+    <!-- ========================================================= -->
+    <!-- DETAIL                                                    -->
+    <!-- ========================================================= -->
+
+    <detail>
+
+        <band height="21">
+
+
+            <!-- ================================================= -->
+            <!-- TEST NAME                                           -->
+            <!-- ================================================= -->
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="40"
+                        y="0"
+                        width="180"
+                        height="20"
+                        positionType="Float"/>
+
+                <textElement
+                        textAlignment="Left"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$F{testName}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- RESULT                                              -->
+            <!-- ================================================= -->
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="220"
+                        y="0"
+                        width="80"
+                        height="20"
+                        positionType="Float"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"
+                            isBold="true"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$F{resultValue}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- UNIT                                                -->
+            <!-- ================================================= -->
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="300"
+                        y="0"
+                        width="75"
+                        height="20"
+                        positionType="Float"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="9"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$F{unit}]]>
+                </textFieldExpression>
+
+            </textField>
+
+
+            <!-- ================================================= -->
+            <!-- NORMAL RANGE                                        -->
+            <!-- ================================================= -->
+
+            <textField isBlankWhenNull="true">
+
+                <reportElement
+                        x="375"
+                        y="0"
+                        width="160"
+                        height="20"
+                        positionType="Float"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="8"/>
+
+                </textElement>
+
+                <textFieldExpression>
+                    <![CDATA[$F{normalRange}]]>
+                </textFieldExpression>
+
+            </textField>
+
+        </band>
+
+    </detail>
+
+
+    <!-- ========================================================= -->
+    <!-- PAGE FOOTER                                               -->
+    <!-- ========================================================= -->
+
+    <pageFooter>
+
+        <band height="50">
+
+            <staticText>
+
+                <reportElement
+                        x="405"
+                        y="5"
+                        width="130"
+                        height="18"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="8"
+                            isBold="true"/>
+
+                </textElement>
+
+                <text><![CDATA[V.S. Agrawal]]></text>
+
+            </staticText>
+
+
+            <staticText>
+
+                <reportElement
+                        x="405"
+                        y="23"
+                        width="130"
+                        height="15"/>
+
+                <textElement
+                        textAlignment="Center"
+                        verticalAlignment="Middle">
+
+                    <font
+                            fontName="Helvetica"
+                            size="7"/>
+
+                </textElement>
+
+                <text><![CDATA[B.Sc. P.G.D.M.L.T]]></text>
+
+            </staticText>
+
+        </band>
+
+    </pageFooter>
+
+
+</jasperReport>
