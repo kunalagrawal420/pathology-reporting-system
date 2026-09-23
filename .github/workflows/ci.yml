@@ -52,17 +52,39 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-
   docker:
-    name: Build Docker Images
+    name: Build and Push Docker Images
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build backend Docker image
-        run: docker build -t pathology-backend:ci .
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build frontend Docker image
-        run: docker build -t pathology-frontend:ci ./frontend
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/kunalagrawal420/pathology-backend:${{ github.sha }}
+            ghcr.io/kunalagrawal420/pathology-backend:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ghcr.io/kunalagrawal420/pathology-frontend:${{ github.sha }}
+            ghcr.io/kunalagrawal420/pathology-frontend:latest
