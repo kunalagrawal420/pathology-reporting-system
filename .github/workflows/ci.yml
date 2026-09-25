@@ -52,6 +52,10 @@ jobs:
 
   docker:
     name: Build and Push Docker Images to ECR
+    needs:
+      - backend
+      - frontend
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     permissions:
@@ -66,7 +70,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::843414937188:role/GitHubActionsPathologyECR
-          aws-region: ap-south-1
+          aws-region: us-east-1
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
@@ -77,8 +81,8 @@ jobs:
           context: .
           push: true
           tags: |
-            843414937188.dkr.ecr.ap-south-1.amazonaws.com/pathology-backend:${{ github.sha }}
-            843414937188.dkr.ecr.ap-south-1.amazonaws.com/pathology-backend:latest
+            843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-backend:${{ github.sha }}
+            843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-backend:latest
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
@@ -86,5 +90,34 @@ jobs:
           context: ./frontend
           push: true
           tags: |
-            843414937188.dkr.ecr.ap-south-1.amazonaws.com/pathology-frontend:${{ github.sha }}
-            843414937188.dkr.ecr.ap-south-1.amazonaws.com/pathology-frontend:latest
+            843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-frontend:${{ github.sha }}
+            843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-frontend:latest
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Configure kubectl for EKS
+        run: |
+          aws eks update-kubeconfig \
+            --region us-east-1 \
+            --name pathology-cluster
+
+      - name: Update Kubernetes image tags
+        run: |
+          sed -i "s|pathology-backend:.*|pathology-backend:${GITHUB_SHA}|" k8s/backend.yaml
+          sed -i "s|pathology-frontend:.*|pathology-frontend:${GITHUB_SHA}|" k8s/frontend.yaml
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f k8s/backend.yaml
+          kubectl apply -f k8s/frontend.yaml
+
+      - name: Wait for backend rollout
+        run: |
+          kubectl rollout status deployment/pathology-backend --timeout=180s
+
+      - name: Wait for frontend rollout
+        run: |
+          kubectl rollout status deployment/pathology-frontend --timeout=180s

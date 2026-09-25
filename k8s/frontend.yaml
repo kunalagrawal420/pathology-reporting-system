@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pathology-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pathology-frontend
+  template:
+    metadata:
+      labels:
+        app: pathology-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: 843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-frontend:1.4
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pathology-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: pathology-frontend
+  ports:
+    - port: 80
+      targetPort: 80
