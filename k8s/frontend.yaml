@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-frontend:1.4
+          image: 843414937188.dkr.ecr.us-east-1.amazonaws.com/pathology-frontend:latest
           ports:
             - containerPort: 80
           resources:
