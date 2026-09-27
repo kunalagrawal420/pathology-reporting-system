@@ -48,3 +48,5 @@ frontend/dist/
 .env
 .env.local
 .env.*.local
+
+ecr-lifecycle-policy.json
